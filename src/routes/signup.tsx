@@ -1,3 +1,3 @@
 export default function Signup () {
-  return <div>signup</div>
+  return <div className=" bg-red-500">signup</div>
 }
