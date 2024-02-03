@@ -1,3 +1,7 @@
+import Layout from "@/components/Layout"
+
 export default function Login() {
-  return <div>Login</div>
+  return <Layout>
+    <div>Login</div>
+  </Layout>
 }
