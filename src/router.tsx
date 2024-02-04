@@ -1,11 +1,11 @@
 
-import { createBrowserRouter,  } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 
 import Index from './routes/index'
 import Signup from './routes/signup'
 import Signin from './routes/signin'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     index: true,
     path: '/',
