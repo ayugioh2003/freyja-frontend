@@ -1,8 +1,37 @@
 import { Link } from 'react-router-dom'
-// import { useState } from 'react'
+import { useEffect } from 'react'
+import { useForm, useWatch } from 'react-hook-form'
+
 import Layout from '@/components/Layout'
 
 export default function Signin() {
+  const defaultValues = {
+    email: '',
+    password: '',
+  }
+  const {
+    register, // 資料狀態
+    handleSubmit, // 針對表單送出的處理方式。會觸發下面的 onSubmit
+    // watch,
+    // setValue,
+    control, // 讓 useWatch 知道在監聽哪個表單，定位用
+    formState: { errors }, // 錯誤狀態
+  } = useForm({
+    defaultValues,
+    mode: 'onTouched', // 點擊到 input 就會進行驗證
+  })
+
+  const onSubmit = (data) => {
+    console.log(data)
+    console.log('email', register('email'))
+    console.log('errors', errors)
+  }
+
+  const watchForm = useWatch({ control })
+  useEffect(() => {
+    console.log('watchForm', watchForm)
+  }, [watchForm])
+
   return (
     <Layout showFooter={false} className="bg-netural-120 h-screen ">
       <div className="flex gap-4">
@@ -27,45 +56,69 @@ export default function Signin() {
             </div>
 
             {/* email and password */}
-            <div className="flex flex-col gap-4">
+            <form
+              action=""
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
               <label htmlFor="">
                 <div className="mb-2 text-white">電子信箱</div>
                 <input
                   type="email"
-                  name="email"
                   placeholder="hello@example.com"
-                  className="input w-full"
+                  className={`input w-full ${
+                    errors.email && 'border-alert-100'
+                  }`}
+                  {...register('email', { required: {
+                    value: true,
+                    message: 'email 為必填'
+                  } })}
                 />
+                {errors.email && (
+                  <div className="text-alert-20">{errors?.email?.message}</div>
+                )}
               </label>
               <label htmlFor="">
                 <div className="mb-2 text-white">密碼</div>
                 <input
                   type="password"
-                  name="password"
                   placeholder="請輸入密碼"
-                  className="input w-full"
+                  className={`input w-full ${
+                    errors.password && 'border-alert-100'
+                  }`}
+                  {...register('password', { required: {
+                    value: true,
+                    message: 'password 為必填'
+                  } })}
                 />
+                {errors.password && (
+                  <div className="text-alert-20">{errors?.password?.message}</div>
+                )}
               </label>
 
-              <div  className='flex justify-between'>
-                <label  className='flex items-center gap-2'>
+              <hr />
+
+              <div className="flex justify-between">
+                <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     name="confirm"
                     id=""
-                    className='checkbox checkbox-primary'
+                    className="checkbox checkbox-primary"
                   />
                   <span className="text-white">記住帳號</span>
                 </label>
-                <Link to="/" className='text-primary underline'>忘記密碼？</Link>
+                <Link to="/" className="text-primary underline">
+                  忘記密碼？
+                </Link>
               </div>
 
               <div className="mt-8 mb-4">
-                <button className="btn bg-netural-40 text-netural-60 w-full">
+                <button type="submit" className="btn bg-netural-40 text-netural-60 w-full">
                   會員登入
                 </button>
               </div>
-            </div>
+            </form>
 
             <div className="mt-4 mb-40">
               <span className="text-white">沒有會員嗎？</span>
