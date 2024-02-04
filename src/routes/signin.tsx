@@ -78,7 +78,7 @@ export default function Signin() {
   }, [watchForm])
 
   return (
-    <Layout showFooter={false} className="bg-netural-120 h-screen ">
+    <Layout showFooter={false} className="bg-netural-120 min-h-screen ">
       <div className="flex gap-4">
         {/* left col */}
         <div className="w-1/2 hidden lg:block">

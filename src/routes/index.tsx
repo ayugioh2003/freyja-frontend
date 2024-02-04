@@ -9,10 +9,11 @@ export default function Index() {
   return (
     <Layout showFooter={false} className="bg-netural-120 h-screen ">
       <div className="container mx-auto text-white">
-        <div>
+        <div className='mb-10'>
         {userStore.name ? `${userStore.name} 使用者已登入` : ''}
         </div>
-        <ul className='mt-10'>
+        <div>完成頁面</div>
+        <ul>
           <li>
             <Link to="signup" className='text-primary'>註冊</Link>
           </li>

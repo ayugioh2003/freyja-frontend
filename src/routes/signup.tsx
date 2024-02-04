@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import dayjs from 'dayjs'
@@ -79,6 +79,7 @@ const ProgressBar = ({ progress, setProgress }: ProgressBarProps) => {
 export default function Signup() {
   const [progress, setProgress] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const defaultValues = {
     email: '',
@@ -136,7 +137,17 @@ export default function Signup() {
         icon: 'success',
       })
 
-      console.log('response', response)
+      Swal.fire({
+        toast: true,
+        timer: 3000,
+        position: 'top-end',
+        showConfirmButton: false,
+        // title: 'oh ya!',
+        text: `將在 3 秒後跳轉回首頁`,
+        icon: 'info',
+      })
+      
+      navigate('/')
     } catch (error) {
       console.error(error)
       Swal.fire({
@@ -155,11 +166,11 @@ export default function Signup() {
 
   const watchForm = useWatch({ control })
   useEffect(() => {
-    console.log('watchForm', watchForm)
+    // console.log('watchForm', watchForm)
   }, [watchForm])
 
   return (
-    <Layout showFooter={false} className="bg-netural-120 h-100 ">
+    <Layout showFooter={false} className="bg-netural-120 min-h-screen ">
       <div className="flex gap-4">
         {/* left col */}
         <div className="w-1/2 hidden lg:block">
@@ -340,7 +351,7 @@ export default function Signup() {
                           },
                         })}
                       >
-                        <option disabled>請選擇年份</option>
+                        <option disabled value="">請選擇年份</option>
                         {[...new Array(100)].map((_, index) => {
                           return (
                             <option key={index}>
@@ -367,7 +378,7 @@ export default function Signup() {
                           },
                         })}
                       >
-                        <option disabled>請選擇月份</option>
+                        <option disabled value="">請選擇月份</option>
                         {[...new Array(12)].map((_, index) => {
                           return <option key={index}>{index + 1}</option>
                         })}
@@ -390,7 +401,7 @@ export default function Signup() {
                           },
                         })}
                       >
-                        <option disabled>請選擇日期</option>
+                        <option disabled value="">請選擇日期</option>
                         {[...new Array(31)].map((_, index) => {
                           return <option key={index}>{index + 1}</option>
                         })}
@@ -418,7 +429,7 @@ export default function Signup() {
                           },
                         })}
                       >
-                        <option disabled>請選擇縣市</option>
+                        <option disabled value="">請選擇縣市</option>
                         {cityTownList.map((cityTown) => {
                           return (
                             <option key={cityTown.city}>{cityTown.city}</option>
@@ -443,7 +454,7 @@ export default function Signup() {
                           },
                         })}
                       >
-                        <option disabled>請選擇鄉鎮區</option>
+                        <option disabled value="">請選擇鄉鎮區</option>
                         {cityTownList
                           .find((item) => item.city === watchForm.city)
                           ?.districts.map((item) => {
