@@ -52,7 +52,7 @@ export default function Signin() {
         position: 'top-end',
         showConfirmButton: false,
         title: 'oh ya!',
-        text: `hihi ${response.result.name}`,
+        text: `hi hi ${response.result.name}`,
         icon: 'success',
       })
     } catch (error: unknown) {
@@ -119,6 +119,10 @@ export default function Signin() {
                       value: true,
                       message: 'email 為必填',
                     },
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: 'Email 格式不正確'
+                    }      
                   })}
                 />
                 {errors.email && (

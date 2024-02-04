@@ -25,7 +25,10 @@ const ProgressBar = ({ progress, setProgress }: ProgressBarProps) => {
   ]
 
   type StatusProps = {
-    status: any
+    status: {
+      progress: number 
+      label: string
+    }
     index: number
     isActive: boolean
   }
@@ -133,7 +136,7 @@ export default function Signup() {
         position: 'top-end',
         showConfirmButton: false,
         title: 'oh ya!',
-        text: `hihi ${response.result.name} 註冊成功！`,
+        text: `hi hi ${response.result.name} 註冊成功！`,
         icon: 'success',
       })
 
@@ -214,6 +217,10 @@ export default function Signup() {
                         value: true,
                         message: 'email 為必填',
                       },
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: 'Email 格式不正確'
+                      }      
                     })}
                   />
                   {errors.email && (
@@ -256,6 +263,8 @@ export default function Signup() {
                         value: true,
                         message: 'passwordConfirm 為必填',
                       },
+                      validate: {
+                        validPassword: (passwordConfirm) => passwordConfirm === watchForm.password || '密碼不一致',                      },
                     })}
                   />
                   {errors.passwordConfirm && (
@@ -268,11 +277,20 @@ export default function Signup() {
                 <div className="mt-8">
                   <button
                     className="btn bg-netural-40 text-netural-60 w-full"
-                    onClick={() => {
+                    onClick={(e) => {
+                      const regex = /^\S+@\S+$/i
+                      if (!regex.test(watchForm.email || '')) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        return
+                      }
+
                       if (
                         !watchForm.password ||
                         watchForm.password !== watchForm.passwordConfirm
                       ) {
+                        e.preventDefault()
+                        e.stopPropagation()
                         Swal.fire({
                           toast: true,
                           timer: 3000,
@@ -503,7 +521,7 @@ export default function Signup() {
                         required: {
                           value: true,
                           message: 'confirm 為必填',
-                        },
+                        },     
                       })}
                     />
                     <span className="text-white">
