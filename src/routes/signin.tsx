@@ -1,10 +1,19 @@
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import Swal from 'sweetalert2'
 
+import useUserStore from '@/store/useUserStore'
+import { login } from '@/services/UserService'
 import Layout from '@/components/Layout'
 
 export default function Signin() {
+  const userStore = useUserStore()
+  const navigate = useNavigate()
+
+  const [isLoading, setIsLoading] = useState(false)
+
   const defaultValues = {
     email: '',
     password: '',
@@ -21,15 +30,51 @@ export default function Signin() {
     mode: 'onTouched', // 點擊到 input 就會進行驗證
   })
 
-  const onSubmit = (data) => {
-    console.log(data)
-    console.log('email', register('email'))
-    console.log('errors', errors)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    const { email, password } = data
+
+    setIsLoading(true)
+
+    try {
+      const response = await login({
+        email,
+        password,
+      })
+
+      userStore.setUser(response)
+
+      navigate('/')
+
+      Swal.fire({
+        toast: true,
+        timer: 3000,
+        position: 'top-end',
+        showConfirmButton: false,
+        title: 'oh ya!',
+        text: `hihi ${response.result.name}`,
+        icon: 'success',
+      })
+    } catch (error: unknown) {
+      Swal.fire({
+        toast: true,
+        timer: 3000,
+        position: 'top-end',
+        showConfirmButton: false,
+        title: 'oh oh!',
+        text: (error as ApiError)?.message,
+        icon: 'error',
+      })
+
+      console.error(error)
+    }
+
+    setIsLoading(false)
   }
 
   const watchForm = useWatch({ control })
   useEffect(() => {
-    console.log('watchForm', watchForm)
+    // console.log('watchForm', watchForm)
   }, [watchForm])
 
   return (
@@ -69,10 +114,12 @@ export default function Signin() {
                   className={`input w-full ${
                     errors.email && 'border-alert-100'
                   }`}
-                  {...register('email', { required: {
-                    value: true,
-                    message: 'email 為必填'
-                  } })}
+                  {...register('email', {
+                    required: {
+                      value: true,
+                      message: 'email 為必填',
+                    },
+                  })}
                 />
                 {errors.email && (
                   <div className="text-alert-20">{errors?.email?.message}</div>
@@ -86,13 +133,17 @@ export default function Signin() {
                   className={`input w-full ${
                     errors.password && 'border-alert-100'
                   }`}
-                  {...register('password', { required: {
-                    value: true,
-                    message: 'password 為必填'
-                  } })}
+                  {...register('password', {
+                    required: {
+                      value: true,
+                      message: 'password 為必填',
+                    },
+                  })}
                 />
                 {errors.password && (
-                  <div className="text-alert-20">{errors?.password?.message}</div>
+                  <div className="text-alert-20">
+                    {errors?.password?.message}
+                  </div>
                 )}
               </label>
 
@@ -114,8 +165,14 @@ export default function Signin() {
               </div>
 
               <div className="mt-8 mb-4">
-                <button type="submit" className="btn bg-netural-40 text-netural-60 w-full">
+                <button
+                  type="submit"
+                  className="btn bg-netural-40 text-netural-60 w-full"
+                >
                   會員登入
+                  {isLoading ? (
+                    <span className="loading loading-spinner loading-xs"></span>
+                  ) : null}
                 </button>
               </div>
             </form>

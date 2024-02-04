@@ -5,6 +5,7 @@ import { Icon } from '@iconify-icon/react'
 // import SvgIcon from './SvgIcon'
 // import LogoImg from '@/assets/svg/LOGO.svg'
 import LogoPng from '@/assets/png/logo_white.png'
+import useUserStore from '@/store/useUserStore'
 
 // const loginStatus = true
 
@@ -13,6 +14,7 @@ type HeaderProps = {
 }
 const Header = ({ className }: HeaderProps) => {
   const navigate = useNavigate()
+  const userStore = useUserStore()
   // const location = useLocation()
   // const [isLogin] = useState<boolean>(loginStatus)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -35,12 +37,22 @@ const Header = ({ className }: HeaderProps) => {
           >
             房客旅宿
           </div>
-          <div
-            className="cursor-pointer py-4 px-8"
-            onClick={() => navigate('/signin')}
-          >
-            會員登入
-          </div>
+          {!userStore.name ? (
+            <div
+              className="cursor-pointer py-4 px-8"
+              onClick={() => navigate('/signin')}
+            >
+              會員登入
+            </div>
+          ) : (
+            <div
+              className="cursor-pointer py-4 px-8 flex gap-1"
+              onClick={() => navigate('/')}
+            >
+              <Icon icon="iconamoon:profile-circle" width={24} height={24}></Icon>
+              <span>{ userStore.name }</span>
+            </div>
+          )}
           <div
             className="cursor-pointer py-4 px-8 bg-primary-100 rounded-md"
             onClick={() => navigate('/')}
