@@ -37,7 +37,7 @@ const Header = ({ className }: HeaderProps) => {
           </div>
           <div
             className="cursor-pointer py-4 px-8"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/signin')}
           >
             會員登入
           </div>
@@ -76,7 +76,7 @@ const Header = ({ className }: HeaderProps) => {
               </div>
               <div
                 className="cursor-pointer py-4 px-8"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/signin')}
               >
                 會員登入
               </div>

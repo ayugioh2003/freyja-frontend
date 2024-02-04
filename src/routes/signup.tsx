@@ -65,7 +65,7 @@ const ProgressBar = ({ progress, setProgress }: ProgressBarProps) => {
   )
 }
 
-export default function Login() {
+export default function Signup() {
   const [progress, setProgress] = useState(1)
 
   return (
@@ -207,7 +207,7 @@ export default function Login() {
 
             <div className="mt-4 mb-40">
               <span className='text-white'>已經有會員了嗎？</span>
-              <Link to="/login" className="text-primary-100 underline">
+              <Link to="/signin" className="text-primary-100 underline">
                 立即登入
               </Link>
             </div>
